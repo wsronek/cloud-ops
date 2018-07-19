@@ -3,24 +3,33 @@
 # Copyright (c) 2018 Juniper Networks, Inc. All rights reserved
 
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: frontend-pod
+  name: frontend
   labels:
     tier: app
     application: HRApp
     site: USA
     deployment: production
 spec:
-  containers:
-  - name: frontend-pod
-    image: savvythru/three-tier-frontend
-    env:
-    - name: REDMINE_DB_MYSQL
-      value: database-svc
-    - name: REDMINE_DB_PASSWORD
-      value: secret
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: app
+  template:
+    metadata:
+      labels:
+        tier: app
+    spec:
+      containers:
+        - name: frontend-pod
+          image: savvythru/three-tier-frontend
+          env:
+            - name: REDMINE_DB_MYSQL
+              value: database-svc
+            - name: REDMINE_DB_PASSWORD
+              value: secret
 ---
 apiVersion: v1
 kind: Service
@@ -38,3 +47,22 @@ spec:
   - protocol: TCP
     port: 3000
     targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: web-app-port-3000-only
+spec:
+  podSelector:
+    matchLabels:
+      tier: app
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          tier: web
+    ports:
+    - protocol: TCP
+      port: 3000
