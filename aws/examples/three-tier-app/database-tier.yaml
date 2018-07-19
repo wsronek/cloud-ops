@@ -1,26 +1,34 @@
 # Author: SAVITHRU LOKANATH
 # Contact: SAVITHRU AT ICLOUD DOT COM
 # Copyright (c) 2018 Juniper Networks, Inc. All rights reserved
-
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: database-pod
+  name: database
   labels:
     tier: db
     application: HRApp
     site: USA
     deployment: production
 spec:
-  containers:
-  - name: database-pod
-    image: savvythru/three-tier-database
-    env:
-    - name: MYSQL_DATABASE
-      value: redmine
-    - name: MYSQL_ROOT_PASSWORD
-      value: secret
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: db
+  template:
+    metadata:
+      labels:
+        tier: db
+    spec:
+      containers:
+        - name: database-pod
+          image: savvythru/three-tier-database
+          env:
+            - name: MYSQL_DATABASE
+              value: redmine
+            - name: MYSQL_ROOT_PASSWORD
+              value: secret
 ---
 apiVersion: v1
 kind: Service
@@ -38,3 +46,22 @@ spec:
   - protocol: TCP
     port: 3306
     targetPort: 3306
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: app-db-port-3306-only
+spec:
+  podSelector:
+    matchLabels:
+      tier: db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          tier: app
+    ports:
+    - protocol: TCP
+      port: 3306
