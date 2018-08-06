@@ -67,13 +67,13 @@ Parameters:
     Description: Contrail release
     Type: String
     AllowedValues:
-    - 5.0.0-0.40
-    Default: 5.0.0-0.40
+    - 5.0-161
+    Default: 5.0-161
     
   ContrailRegistry:
     Description: Registry to pull Contrail containers
     Type: String
-    Default: hub.juniper.net/contrail
+    Default: hub.juniper.net/contrail-nightly
     
   ContrailRegistryUsername:
     Description: Registry username
