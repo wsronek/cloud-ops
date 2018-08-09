@@ -21,6 +21,7 @@ openshift_enable_service_catalog=false
 openshift_use_openshift_sdn=false
 openshift_disable_check=docker_storage,package_version
 os_sdn_network_plugin_name='cni'
+nested_mode_contrail = false
 
 # Below are Contrail variables. Comment them out if you don't want to install Contrail through ansible-playbook
 
