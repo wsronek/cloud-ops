@@ -22,6 +22,7 @@ openshift_use_openshift_sdn=false
 openshift_disable_check=docker_storage,package_version
 os_sdn_network_plugin_name='cni'
 nested_mode_contrail = false
+openshift_web_console_nodeselector={‘region’:‘infra’}
 
 # Below are Contrail variables. Comment them out if you don't want to install Contrail through ansible-playbook
 
