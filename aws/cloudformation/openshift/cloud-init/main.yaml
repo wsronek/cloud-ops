@@ -51,6 +51,10 @@
 
 - name: restart dnsmasq
   service: name=dnsmasq state=restarted
+
+- name: Add entry to resolv.conf
+  command: sudo echo nameserver 8.8.8.8 >> /etc/resolv.conf
+
 - when:
   - loopback.stat.exists == False
 
@@ -60,6 +64,7 @@
       path: "/opt/cni/bin"
       recurse: True
       state: directory
+
 
   - name: Download & extract loopback CNI binary
     unarchive:
