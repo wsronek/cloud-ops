@@ -52,9 +52,9 @@
 - name: restart dnsmasq
   service: name=dnsmasq state=restarted
 
-- name: Add entry to resolv.conf
-  command: sudo echo nameserver 8.8.8.8 >> /etc/resolv.conf
-
+- lineinfile:
+    path: /etc/resolv.conf
+    line: 'nameserver 8.8.8.8 '
 - when:
   - loopback.stat.exists == False
 
