@@ -49,6 +49,13 @@
 - name: Add iptable rules to open dns port
   command: iptables -I INPUT 4 -j ACCEPT -p udp --dport 53
 
+- lineinfile:
+    path: /etc/resolv.conf
+    line: 'nameserver 8.8.8.8 '
+
+- name: Set core dump pattern on node
+  command: chattr +i /etc/resolv.conf
+
 - when:
   - loopback.stat.exists == False
 
