@@ -53,7 +53,7 @@
     path: /etc/resolv.conf
     line: 'nameserver 8.8.8.8 '
 
-- name: Set core dump pattern on node
+- name: edit resolv.conf
   command: chattr +i /etc/resolv.conf
 
 - when:
