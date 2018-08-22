@@ -1,0 +1,4 @@
+echo "Create a blue-net network from contrail UI"
+cat blue-pod.yaml
+oc create -f blue-pod.yaml
+oc get pods -o wide

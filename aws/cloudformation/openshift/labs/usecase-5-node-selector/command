@@ -1,0 +1,10 @@
+cat ubuntu.yaml 
+sleep 5
+oc create -f ubuntu.yaml 
+
+oc get pods -o wide
+sleep 5
+cat ubuntu-green.yaml 
+oc create -f ubuntu-green.yaml
+
+oc get pods -o wide 
